@@ -1,12 +1,17 @@
 export const actions = {
 	default: async ({ request }) => {
-		// Read the data that was submitted from the form.
+		// Read the submitted form data.
 		const formData = await request.formData();
 
-		// Get the email value from the form.
+		// Get the email from the form.
 		const email = formData.get('email');
 
-		// For now, only show the email in the terminal.
+		// Show the email in the terminal for testing.
 		console.log('Email entered:', email);
+
+		// Send a simple message back to the page.
+		return {
+			success: true
+		};
 	}
 };
