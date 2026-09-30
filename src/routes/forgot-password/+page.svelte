@@ -21,9 +21,15 @@
 </form>
 
 {#if form?.success}
-	<p>Reset request received.</p>
+	<p>If this email exists, a reset link has been created.</p>
+{/if}
+
+{#if form?.error}
+	<p>{form.error}</p>
 {/if}
 
 {#if form?.resetLink}
-	<p>{form.resetLink}</p>
+	<p>
+		<a href={form.resetLink}>Open reset link</a>
+	</p>
 {/if}

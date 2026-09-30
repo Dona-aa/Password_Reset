@@ -1,5 +1,6 @@
 import { users } from '$lib/server/users.js';
 import crypto from 'crypto';
+import { fail } from '@sveltejs/kit';
 
 
 export const actions = {
@@ -9,6 +10,13 @@ export const actions = {
 
 		// Get the email from the form.
 		const email = formData.get('email');
+
+        // Stop if the email is missing.
+        if (!email) {
+            return fail(400, {
+                error: 'Email is required.'
+            });
+        }
 
 		// Search for a user with this email.
 		const user = users.find((user) => user.email === email);
