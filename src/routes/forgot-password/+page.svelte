@@ -23,3 +23,7 @@
 {#if form?.success}
 	<p>Reset request received.</p>
 {/if}
+
+{#if form?.resetLink}
+	<p>{form.resetLink}</p>
+{/if}
