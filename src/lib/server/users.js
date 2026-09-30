@@ -4,7 +4,7 @@
 export const users = [
 	{
 		id: 1,
-		email: 'test@example.com',
+		email: 'edoper19@htl-shkoder.com',
 		password: 'temporary-password',
 		resetToken: null,
         resetTokenExpires: null

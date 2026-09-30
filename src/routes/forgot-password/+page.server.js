@@ -1,6 +1,8 @@
 import { users } from '$lib/server/users.js';
 import crypto from 'crypto';
 import { fail } from '@sveltejs/kit';
+import { transporter } from '$lib/server/email.js';
+import { SMTP_FROM } from '$env/static/private';
 
 
 export const actions = {
@@ -34,6 +36,16 @@ export const actions = {
 
             // Create the reset link that would normally be sent by email.
             resetLink = `/reset-password?token=${resetToken}`;
+
+            // Send the reset link by email.
+            await transporter.sendMail({
+                from: SMTP_FROM,
+                to: email,
+                subject: 'Password Reset',
+                text: `Click this link to reset your password: http://localhost:5173${resetLink}`
+            });
+
+
             console.log('Reset link:', resetLink);
 
             console.log('Reset token:', resetToken);
