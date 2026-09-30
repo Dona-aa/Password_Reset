@@ -17,8 +17,15 @@ export const actions = {
         if (user) {
             const resetToken = crypto.randomBytes(32).toString('hex');
 
+             // Save the token temporarily on the user.
+            user.resetToken = resetToken;
+
+            // Make the token valid for 15 minutes.
+            user.resetTokenExpires = Date.now() + 15 * 60 * 1000;
+
             console.log('Reset token:', resetToken);
         }
+
 
 		// Print the result in the terminal for testing.
 		console.log('Found user:', user);

@@ -5,6 +5,8 @@ export const users = [
 	{
 		id: 1,
 		email: 'test@example.com',
-		password: 'temporary-password'
+		password: 'temporary-password',
+		resetToken: null,
+        resetTokenExpires: null
 	}
 ];
