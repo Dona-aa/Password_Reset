@@ -36,7 +36,7 @@ export const actions = {
         
         // Update the user's password.
         user.password = password;
-        
+
         // Update the user's password.
         user.password = password;
     
