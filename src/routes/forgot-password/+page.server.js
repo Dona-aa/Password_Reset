@@ -45,15 +45,7 @@ export const actions = {
                 text: `Click this link to reset your password: http://localhost:5173${resetLink}`
             });
 
-
-            console.log('Reset link:', resetLink);
-
-            console.log('Reset token:', resetToken);
         }
-
-
-		// Print the result in the terminal for testing.
-		console.log('Found user:', user);
 
 		return {
 			success: true,
