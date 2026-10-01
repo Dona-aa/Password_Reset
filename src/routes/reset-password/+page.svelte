@@ -20,6 +20,16 @@
 		placeholder="Enter new password"
 		required
 	/>
+
+	<label for="confirmPassword">Confirm password</label>
+ 
+	<input
+		id="confirmPassword"
+		name="confirmPassword"
+		type="password"
+		placeholder="Enter password again"
+		required
+	/>
  
 	<button type="submit">
 		Reset password

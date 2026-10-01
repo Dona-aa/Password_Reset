@@ -9,6 +9,8 @@ export const actions = {
 		// Get the new password from the form.
 		const password = formData.get('password');
 
+        const confirmPassword = formData.get('confirmPassword');
+
         // Read the reset token from the URL.
         const token = url.searchParams.get('token');
 
@@ -19,11 +21,22 @@ export const actions = {
         const tokenExpired = user && user.resetTokenExpires < Date.now();
 
         // Stop if the token does not exist or has expired.
-        if (!user || tokenExpired) {
-	    return fail(400, {
-		error: 'Invalid or expired reset token.'
-	    });
-    }
+            if (!user || tokenExpired) {
+            return fail(400, {
+                error: 'Invalid or expired reset token.'
+            });
+        }
+        
+        // Check if both password fields match.
+        if (password !== confirmPassword) {
+            return fail(400, {
+                error: 'Passwords do not match.'
+            });
+        }
+        
+        // Update the user's password.
+        user.password = password;
+        
         // Update the user's password.
         user.password = password;
     
