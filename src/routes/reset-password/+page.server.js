@@ -33,6 +33,13 @@ export const actions = {
                 error: 'Passwords do not match.'
             });
         }
+        // Require a password with at least 8 characters.
+        if (password.length < 8) {
+            return fail(400, {
+                error: 'Password must be at least 8 characters long.'
+            });
+        }
+
         
         // Update the user's password.
         user.password = password;
