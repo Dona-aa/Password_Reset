@@ -1,5 +1,8 @@
 import { fail } from '@sveltejs/kit';
-import { users } from '$lib/server/users.js';
+import { db } from '$lib/server/db.js';
+
+const [rows] = await db.query('SELECT * FROM users');
+console.log(rows);
 
 export const actions = {
 	default: async ({ request, url }) => {
@@ -13,12 +16,14 @@ export const actions = {
 
         // Read the reset token from the URL.
         const token = url.searchParams.get('token');
+        
+        // Look up the user by the reset token.
+       const [rows] = await db.query('SELECT * FROM users WHERE reset_token = ?',[token]);
+        const user = rows[0];
 
-        // Find the user that owns this reset token.
-        const user = users.find((user) => user.resetToken === token);
 
         // Check if the token has expired.
-        const tokenExpired = user && user.resetTokenExpires < Date.now();
+        const tokenExpired = user &&  user.reset_token_expires < Date.now();
 
         // Stop if the token does not exist or has expired.
             if (!user || tokenExpired) {
@@ -44,13 +49,13 @@ export const actions = {
         // Update the user's password.
         user.password = password;
 
-        // Update the user's password.
-        user.password = password;
-    
-
-        // Remove the reset token so it cannot be used again.
-        user.resetToken = null;
-        user.resetTokenExpires = null;
+       // Update the password and remove the reset token in MySQL.
+        await db.query(
+            `UPDATE users
+            SET password = ?, reset_token = NULL, reset_token_expires = NULL
+            WHERE id = ?`,
+            [password, user.id]
+        );
 
         return { success: true};
 	}

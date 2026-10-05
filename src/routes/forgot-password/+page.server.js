@@ -3,6 +3,7 @@ import crypto from 'crypto';
 import { fail } from '@sveltejs/kit';
 import { transporter } from '$lib/server/email.js';
 import { SMTP_FROM } from '$env/static/private';
+import { db } from '$lib/server/db.js';
 
 
 export const actions = {
@@ -28,11 +29,16 @@ export const actions = {
         if (user) {
             const resetToken = crypto.randomBytes(32).toString('hex');
 
-             // Save the token temporarily on the user.
-            user.resetToken = resetToken;
+            
+ 
+// Set the expiration time to 15 minutes from now.
 
-            // Make the token valid for 15 minutes.
-            user.resetTokenExpires = Date.now() + 15 * 60 * 1000;
+const resetTokenExpires = new Date(Date.now() + 15 * 60 * 1000);
+ 
+// Save the token and expiration time in MySQL.
+
+await db.query(`UPDATE users SET reset_token = ?, reset_token_expires = ? WHERE email = ?`,[resetToken, resetTokenExpires, email]);
+ 
 
             // Create the reset link that would normally be sent by email.
             resetLink = `/reset-password?token=${resetToken}`;
