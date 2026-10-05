@@ -1,4 +1,3 @@
-import { users } from '$lib/server/users.js';
 import crypto from 'crypto';
 import { fail } from '@sveltejs/kit';
 import { transporter } from '$lib/server/email.js';
@@ -22,7 +21,13 @@ export const actions = {
         }
 
 		// Search for a user with this email.
-		const user = users.find((user) => user.email === email);
+		// Search for the user in MySQL.
+        const [rows] = await db.query(
+            'SELECT * FROM users WHERE email = ?',
+            [email]
+        );
+
+        const user = rows[0];
 
         let resetLink = null;
                 // If a user was found, create a random reset token.
