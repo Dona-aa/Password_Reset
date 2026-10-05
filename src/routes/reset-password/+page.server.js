@@ -17,16 +17,22 @@ export const actions = {
         // Read the reset token from the URL.
         const token = url.searchParams.get('token');
         
-        // Look up the user by the reset token.
-       const [rows] = await db.query('SELECT * FROM users WHERE reset_token = ?',[token]);
-        const user = rows[0];
+       // Find the reset token in the token_reset table.
+        const [rows] = await db.query(
+            `SELECT * FROM token_reset
+            WHERE token = ?                
+            AND used = FALSE`,
+            [token]
+        );
+            
+        const resetToken = rows[0];
 
 
         // Check if the token has expired.
-        const tokenExpired = user &&  user.reset_token_expires < Date.now();
+        const tokenExpired = resetToken && new Date(resetToken.expires_at) < new Date();
 
         // Stop if the token does not exist or has expired.
-            if (!user || tokenExpired) {
+            if (!resetToken || tokenExpired) {
             return fail(400, {
                 error: 'Invalid or expired reset token.'
             });
@@ -45,16 +51,21 @@ export const actions = {
             });
         }
 
-        
-        // Update the user's password.
-        user.password = password;
 
-       // Update the password and remove the reset token in MySQL.
+      // Update the user's password.
         await db.query(
             `UPDATE users
-            SET password = ?, reset_token = NULL, reset_token_expires = NULL
+            SET password = ?
             WHERE id = ?`,
-            [password, user.id]
+            [password, resetToken.user_id]
+        );
+
+        // Mark the reset token as used.
+        await db.query(
+            `UPDATE token_reset
+            SET used = TRUE
+            WHERE id = ?`,
+            [resetToken.id]
         );
 
         return { success: true};
