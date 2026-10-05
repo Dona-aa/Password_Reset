@@ -9,13 +9,17 @@
 <main class="page">
 	<nav class="nav">
 		<div class="nav-inner">
-			<a class="brand" href="/">
+			<a class="brand" href="/welcome">
 				<span class="brand-dot"></span>
 				Password Reset
 			</a>
 
 			<div class="nav-links">
-				<a href="/">Login</a>
+				<form method="POST" action="/logout">
+					<button class="logout-button" type="submit">
+						Logout
+					</button>
+				</form>
 			</div>
 		</div>
 	</nav>
@@ -66,21 +70,18 @@
 		flex-direction: column;
 	}
 
-	.nav,
-	.footer {
+	.nav {
 		width: 100%;
 		background: #2f3438;
 	}
 
-	.nav-inner,
-	.footer-inner {
+	.nav-inner {
 		width: 100%;
 		padding: 17px 26px;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		box-sizing: border-box;
-		color: white;
 	}
 
 	.brand {
@@ -90,6 +91,7 @@
 		color: white;
 		text-decoration: none;
 		font-weight: 700;
+		font-size: 17px;
 	}
 
 	.brand-dot {
@@ -99,9 +101,23 @@
 		background: #8fa6b7;
 	}
 
-	.nav-links a {
+	.nav-links form {
+		margin: 0;
+	}
+
+	.logout-button {
+		border: none;
+		background: transparent;
 		color: #c8d0d5;
-		text-decoration: none;
+		font: inherit;
+		font-size: 14px;
+		font-weight: 500;
+		cursor: pointer;
+		padding: 0;
+	}
+
+	.logout-button:hover {
+		color: white;
 	}
 
 	.content {
@@ -110,6 +126,7 @@
 		align-items: center;
 		justify-content: center;
 		padding: 45px 20px;
+		box-sizing: border-box;
 	}
 
 	.card {
@@ -120,6 +137,7 @@
 		border-radius: 22px;
 		padding: 40px;
 		text-align: center;
+		box-sizing: border-box;
 		box-shadow: 0 18px 45px rgba(50, 60, 70, 0.08);
 	}
 
@@ -146,27 +164,70 @@
 	h1 {
 		margin: 0;
 		font-size: 36px;
+		line-height: 1.15;
+		letter-spacing: -0.8px;
 	}
 
 	.description {
-		margin-top: 16px;
+		margin: 16px 0 0;
 		color: #68737b;
+		line-height: 1.65;
 	}
 
-	.footer-brand,
-	.footer-sub,
-	.copyright {
+	.footer {
+		width: 100%;
+		background: #2f3438;
+	}
+
+	.footer-inner {
+		width: 100%;
+		padding: 20px 26px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		box-sizing: border-box;
+		color: white;
+	}
+
+	.footer-brand {
 		margin: 0;
+		font-weight: 700;
+		font-size: 15px;
 	}
 
 	.footer-sub {
-		margin-top: 4px;
+		margin: 4px 0 0;
 		color: #aeb7bd;
 		font-size: 13px;
 	}
 
 	.copyright {
+		margin: 0;
 		color: #c7ced3;
 		font-size: 13px;
+	}
+
+	@media (max-width: 600px) {
+		.nav-inner {
+			align-items: flex-start;
+		}
+
+		.content {
+			padding: 40px 18px;
+		}
+
+		.card {
+			padding: 30px 24px;
+		}
+
+		h1 {
+			font-size: 31px;
+		}
+
+		.footer-inner {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 14px;
+		}
 	}
 </style>
