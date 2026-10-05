@@ -1,9 +1,9 @@
+<script>
+	let { form } = $props();
+</script>
+
 <svelte:head>
-	<title>Password Reset</title>
-	<meta
-		name="description"
-		content="Simple password reset prototype built with SvelteKit."
-	/>
+	<title>Login</title>
 </svelte:head>
 
 <main class="page">
@@ -15,47 +15,61 @@
 			</a>
 
 			<div class="nav-links">
-				<a class="active" href="/">Home</a>
+				<a class="active" href="/">Login</a>
 				<a href="/forgot-password">Forgot Password</a>
 			</div>
 		</div>
 	</nav>
 
-	<section class="hero">
-		<div class="badge">Password Reset Prototype</div>
+	<section class="content">
+		<div class="card">
+			<div class="icon">→</div>
 
-		<h1>Forgot your password?</h1>
+			<p class="eyebrow">WELCOME BACK</p>
 
-		<p class="intro">
-			No problem. Request a secure reset link and choose a new password in just a few steps.
-		</p>
+			<h1>Login</h1>
 
-		<a class="primary-button" href="/forgot-password">
-			Reset password
-			<span>→</span>
-		</a>
-	</section>
-
-	<section class="info-grid">
-		<article class="card">
-			<div class="number">01</div>
-			<h2>Enter your email</h2>
-			<p>Tell us which account you want to recover.</p>
-		</article>
-
-		<article class="card">
-			<div class="number">02</div>
-			<h2>Receive a reset link</h2>
-			<p>We create a secure token and send the link by email.</p>
-		</article>
-
-		<article class="card">
-			<div class="number">03</div>
-			<h2>Choose a new password</h2>
-			<p>
-				The reset link is valid for a limited time and can only be used once.
+			<p class="description">
+				Enter your email and password to continue.
 			</p>
-		</article>
+
+			<form method="POST">
+				<label for="email">Email address</label>
+
+				<input
+					id="email"
+					name="email"
+					type="email"
+					placeholder="you@example.com"
+					required
+				/>
+
+				<label for="password">Password</label>
+
+				<input
+					id="password"
+					name="password"
+					type="password"
+					placeholder="Enter your password"
+					required
+				/>
+
+				<button type="submit">
+					Login
+					<span>→</span>
+				</button>
+			</form>
+
+			<a class="forgot-link" href="/forgot-password">
+				Forgot Password?
+			</a>
+
+			{#if form?.error}
+				<div class="message error">
+					{form.error}
+				</div>
+			{/if}
+		</div>
 	</section>
 
 	<footer class="footer">
@@ -93,17 +107,16 @@
 	.nav {
 		width: 100%;
 		background: #2f3438;
-		box-shadow: 0 6px 18px rgba(47, 52, 56, 0.08);
 	}
 
 	.nav-inner {
-	width: 100%;
-	padding: 17px 26px;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	box-sizing: border-box;
-}
+		width: 100%;
+		padding: 17px 26px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		box-sizing: border-box;
+	}
 
 	.brand {
 		display: flex;
@@ -133,7 +146,6 @@
 		text-decoration: none;
 		font-size: 14px;
 		font-weight: 500;
-		transition: color 0.2s ease;
 	}
 
 	.nav-links a:hover,
@@ -141,119 +153,148 @@
 		color: white;
 	}
 
-	.hero {
-		max-width: 900px;
-		margin: 0 auto;
-		padding: 95px 24px 72px;
-		text-align: center;
+	.content {
+		flex: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 45px 20px;
+		box-sizing: border-box;
 	}
 
-	.badge {
-		display: inline-block;
-		padding: 8px 14px;
-		border-radius: 999px;
+	.card {
+		width: 100%;
+		max-width: 500px;
+		background: #fffdf8;
+		border: 1px solid #dde1e4;
+		border-radius: 22px;
+		padding: 40px;
+		box-sizing: border-box;
+		box-shadow: 0 18px 45px rgba(50, 60, 70, 0.08);
+	}
+
+	.icon {
+		width: 52px;
+		height: 52px;
+		display: grid;
+		place-items: center;
+		border-radius: 14px;
 		background: #e7edf1;
 		color: #536878;
-		font-size: 13px;
+		font-size: 23px;
+		margin-bottom: 22px;
+	}
+
+	.eyebrow {
+		margin: 0 0 10px;
+		font-size: 12px;
 		font-weight: 700;
-		letter-spacing: 0.3px;
-		margin-bottom: 24px;
+		letter-spacing: 1.5px;
+		color: #7c8d99;
 	}
 
 	h1 {
 		margin: 0;
-		font-size: clamp(46px, 7vw, 76px);
-		line-height: 1;
-		letter-spacing: -2.4px;
-		font-weight: 700;
+		font-size: 36px;
+		line-height: 1.15;
+		letter-spacing: -0.8px;
 	}
 
-	.intro {
-		max-width: 620px;
-		margin: 28px auto 34px;
-		font-size: 18px;
-		line-height: 1.7;
+	.description {
+		margin: 16px 0 30px;
 		color: #68737b;
+		line-height: 1.65;
 	}
 
-	.primary-button {
-		display: inline-flex;
-		align-items: center;
+	form {
+		display: flex;
+		flex-direction: column;
 		gap: 10px;
-		padding: 14px 20px;
-		border-radius: 12px;
+	}
+
+	label {
+		font-size: 14px;
+		font-weight: 600;
+	}
+
+	input {
+		width: 100%;
+		padding: 14px 15px;
+		border: 1px solid #cfd6db;
+		border-radius: 11px;
+		background: #ffffff;
+		font: inherit;
+		color: #2f3438;
+		box-sizing: border-box;
+		outline: none;
+	}
+
+	input:focus {
+		border-color: #6f8597;
+		box-shadow: 0 0 0 3px rgba(111, 133, 151, 0.14);
+	}
+
+	button {
+		margin-top: 8px;
+		padding: 14px 16px;
+		border: none;
+		border-radius: 11px;
 		background: #6f8597;
 		color: white;
-		text-decoration: none;
+		font: inherit;
 		font-weight: 600;
-		box-shadow: 0 8px 22px rgba(111, 133, 151, 0.2);
-		transition:
-			transform 0.2s ease,
-			background 0.2s ease;
-	}
-
-	.primary-button:hover {
-		background: #596f80;
-		transform: translateY(-2px);
-	}
-
-	.info-grid {
-		max-width: 1050px;
-		width: calc(100% - 40px);
-		margin: 0 auto 90px;
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: 18px;
-	}
-
-	.card {
-		background: #fffdf8;
-		border: 1px solid #dde1e4;
-		border-radius: 20px;
-		padding: 28px;
-		box-shadow: 0 12px 30px rgba(50, 60, 70, 0.05);
-	}
-
-	.number {
-		display: inline-flex;
+		cursor: pointer;
+		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 36px;
-		height: 36px;
-		border-radius: 10px;
-		background: #e7edf1;
+		gap: 9px;
+	}
+
+	button:hover {
+		background: #596f80;
+	}
+
+	.forgot-link {
+		display: inline-block;
+		margin-top: 18px;
 		color: #536878;
-		font-size: 13px;
-		font-weight: 700;
-		margin-bottom: 22px;
+		text-decoration: none;
+		font-size: 14px;
+		font-weight: 600;
 	}
 
-	h2 {
-		margin: 0 0 10px;
-		font-size: 22px;
+	.forgot-link:hover {
+		text-decoration: underline;
 	}
 
-	.card p {
-		margin: 0;
-		color: #68737b;
-		line-height: 1.6;
+	.message {
+		margin-top: 18px;
+		padding: 13px 14px;
+		border-radius: 10px;
+		font-size: 14px;
+		line-height: 1.5;
+	}
+
+	.error {
+		background: #f8e7e4;
+		color: #7e3b35;
+		border: 1px solid #efd0cb;
 	}
 
 	.footer {
-		margin-top: auto;
 		width: 100%;
 		background: #2f3438;
 	}
 
 	.footer-inner {
-	width: 100%;
-	padding: 20px 26px;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	box-sizing: border-box;
-	color: white;
-}
+		width: 100%;
+		padding: 20px 26px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		box-sizing: border-box;
+		color: white;
+	}
 
 	.footer-brand {
 		margin: 0;
@@ -273,12 +314,6 @@
 		font-size: 13px;
 	}
 
-	@media (max-width: 800px) {
-		.info-grid {
-			grid-template-columns: 1fr;
-		}
-	}
-
 	@media (max-width: 600px) {
 		.nav-inner {
 			align-items: flex-start;
@@ -288,6 +323,18 @@
 			flex-direction: column;
 			align-items: flex-end;
 			gap: 8px;
+		}
+
+		.content {
+			padding: 40px 18px;
+		}
+
+		.card {
+			padding: 30px 24px;
+		}
+
+		h1 {
+			font-size: 31px;
 		}
 
 		.footer-inner {
